@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using TD.Monsters;
 
 public class CannonProjectile : MonoBehaviour {
 	public float m_speed = 0.2f;
@@ -11,7 +12,7 @@ public class CannonProjectile : MonoBehaviour {
 	}
 
 	void OnTriggerEnter(Collider other) {
-		var monster = other.gameObject.GetComponent<Monster> ();
+		var monster = other.gameObject.GetComponent<BaseMonster> ();
 		if (monster == null)
 			return;
 

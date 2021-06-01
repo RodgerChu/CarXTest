@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using TD.Monsters;
 
 public class GuidedProjectile : MonoBehaviour {
 	public GameObject m_target;
@@ -20,7 +21,7 @@ public class GuidedProjectile : MonoBehaviour {
 	}
 
 	void OnTriggerEnter(Collider other) {
-		var monster = other.gameObject.GetComponent<Monster> ();
+		var monster = other.gameObject.GetComponent<BaseMonster> ();
 		if (monster == null)
 			return;
 
