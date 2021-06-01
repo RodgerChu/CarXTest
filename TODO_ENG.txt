@@ -1,0 +1,11 @@
+Unity developer test Job in CarX
+
+Imagine that you are becoming the new and only developer of the test project "CarX Tower Defense". Here is project in its current state, your tasks in order of priority:
+
+Required:
+1) inspect the project: refactor, redesign, optimize, correct founded defects. Implement a clear, understandable, simple architecture, without unnecessary clutter, in accordance with the principles of SOLID;
+2) implement a pre-emptive firing for Cannon Tower: add target search functionality so that the launched projectiles hit the target; the shells must fly straight out of the barrel; on a projectile in flight it is forbidden to apply any forces or corrections;
+
+Optional:
+3) implement seeking and tracking of target for Cannon Tower; the rotation of the Canon Tower's barrel must be smooth; make it possible to adjust the speed of rotation of the gun;
+4) implement functional of firing along a parabolic trajectory for Canon Tower
