@@ -1,18 +1,22 @@
 using System.Collections;
 using System.Collections.Generic;
+using TD.Configs.Projectiles;
+using TD.Factories;
+using TD.Towers.Projectiles;
 using UnityEngine;
 
-public class SimpleAttackBehaviour : MonoBehaviour
+namespace TD.Towers.AttackBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    [RequireComponent(typeof(SimpleProjectileFactory))]
+    public class SimpleAttackBehaviour : BaseAttackBehaviour
     {
-        
-    }
+        protected override IFactory<BaseProjectile> _projectilesFactory => _factory;
 
-    // Update is called once per frame
-    void Update()
-    {
-        
+        private SimpleProjectileFactory _factory;
+
+        private void Awake()
+        {
+            _factory = GetComponent<SimpleProjectileFactory>();
+        }
     }
 }

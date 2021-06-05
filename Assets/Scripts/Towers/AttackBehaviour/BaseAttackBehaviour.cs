@@ -9,20 +9,21 @@ namespace TD.Towers.AttackBehaviour
 {
     public abstract class BaseAttackBehaviour : MonoBehaviour
     {
-        [SerializeField] private float _attackCooldown = 0.5f;
-        [SerializeField] private BaseProjectile _projectilePrefab;
-        [SerializeField] private ProjectilesManager _projectilesManager;
+        [SerializeField] protected float _attackCooldown = 0.5f;
+        [SerializeField] protected ProjectilesManager _projectilesManager;
+        [SerializeField] protected Transform _turretBarrel;
 
         protected abstract IFactory<BaseProjectile> _projectilesFactory { get; }
 
-        private float _cooldownCounter = 0f;
+        protected float _cooldownCounter = 0f;
 
         public bool CanAttack => _cooldownCounter <= 0;
 
         public virtual void Attack(BaseMonster target)
         {
             var projectile = _projectilesFactory.Create();
-            projectile.SetDirection(target.transform);
+            projectile.transform.position = _turretBarrel.transform.position;
+            projectile.SetDirection(target.transform.position);
 
             _projectilesManager.AddProjectile(projectile);
 

@@ -10,10 +10,9 @@ namespace TD.EnemiesSpawn
     public class EnemiesSpawner : MonoBehaviour
     {
         [SerializeField] private EnemiesWaveData[] _enemiesWaves;
+        [SerializeField] private MonstersManager _monstersManager;
         [SerializeField] private Transform _spawnPosition;
         [SerializeField] private Transform _destination;
-
-        public Action<BaseMonster> OnEnemySpawned;
 
         private int _completedSpawnCoroutines = 0;
 
@@ -62,9 +61,9 @@ namespace TD.EnemiesSpawn
         {
             var monster = Instantiate(prefab);
             monster.transform.position = _spawnPosition.position;
-            monster.m_moveTarget = _destination.gameObject;
+            monster.SetMoveDestination(_destination);
 
-            OnEnemySpawned?.Invoke(monster);
+            _monstersManager.AddMonster(monster);
         }
     }
 }

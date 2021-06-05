@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using TD.Configs.Projectiles;
+using TD.Hitables;
 using UnityEngine;
 
 namespace TD.Towers.Projectiles
@@ -17,9 +18,9 @@ namespace TD.Towers.Projectiles
 
         public abstract void UpdateInternal();
 
-        public virtual void SetDirection(Transform direction)
+        public virtual void SetDirection(Vector3 direction)
         {
-            transform.LookAt(direction);
+            gameObject.transform.LookAt(direction);
         }
 
         public virtual void AddOnHitCallback(Action<BaseProjectile> callback)
@@ -30,6 +31,16 @@ namespace TD.Towers.Projectiles
         public virtual void RemoveOnHitCallback(Action<BaseProjectile> callback)
         {
             OnHit -= callback;
+        }
+
+        private void OnTriggerEnter(Collider other)
+        {
+            var hitable = other.GetComponent<IHitable>();
+            if (hitable != null)
+            {
+                hitable.OnHit(this);
+                OnHit?.Invoke(this);
+            }
         }
     }
 }

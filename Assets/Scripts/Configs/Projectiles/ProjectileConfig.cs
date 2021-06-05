@@ -2,6 +2,7 @@ using UnityEngine;
 
 namespace TD.Configs.Projectiles
 {
+    [CreateAssetMenu(fileName = "ProjectileConfig", menuName = "Configs/ProjectileConfig", order = 2)]
     public class ProjectileConfig : ScriptableObject
     {
         [SerializeField] private float _speed;

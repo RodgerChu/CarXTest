@@ -23,6 +23,8 @@ namespace TD.Towers.Projectiles
         {
             _projectiles.Remove(projectile);
             projectile.RemoveOnHitCallback(RemoveProjectile);
+
+            Destroy(projectile.gameObject);
         }
     }
 }
