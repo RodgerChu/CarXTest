@@ -42,7 +42,7 @@ namespace TD.Towers.TrackBehaviour
                 _towerBarrel.transform.rotation = Quaternion.Slerp(_towerBarrel.transform.rotation, rotationValue, Time.deltaTime * _rotationSpeed);
 
                 var currentThreshhold = Quaternion.Angle(_towerBarrel.transform.rotation, rotationValue);
-                _canShoot = currentThreshhold <= _rotationSpeed;
+                _canShoot = currentThreshhold <= _treshhold;
 
                 yield return null;
             }
