@@ -1,9 +1,10 @@
 ﻿using UnityEngine;
-using System.Collections;
 using TD.Hitables;
 using TD.Towers.Projectiles;
 using System;
 using TD.Configs.Monsters;
+using TD.Monsters.Move;
+using TD.Monsters.Health;
 
 namespace TD.Monsters
 {
@@ -12,6 +13,8 @@ namespace TD.Monsters
         const float _destinationReachedTreshhold = 0.3f;
 
         [SerializeField] private MonsterStats _stats;
+        [SerializeField] private BaseMonsterMoveBehaviour _moveBehaviour;
+        [SerializeField] private BaseMonsterHealthBehaviour _healthBehaviour;
 
         private Transform _destination;
         private float _currentHp;
@@ -25,6 +28,14 @@ namespace TD.Monsters
         void Awake()
         {
             _currentHp = _stats.MaxHP;
+            _healthBehaviour.Initialize(_stats);
+            _moveBehaviour.Initialize(_stats.Speed);
+        }
+
+        private void Start()
+        {
+            _moveBehaviour.AddOnDestinationReachedCallback(OnDestinationReached);
+            _healthBehaviour.AddOnKilledCallback(OnKilled);
         }
 
         void IHitable.OnHit(BaseProjectile hitProjectile)
@@ -37,27 +48,24 @@ namespace TD.Monsters
 
         public void UpdateInternal()
         {
-            if (_destination == null)
-                return;
+            _moveBehaviour.UpdateInternal();
+        }
 
-            if (Vector3.Distance(transform.position, _destination.position) <= _destinationReachedTreshhold)
-            {
-                _onDestinationReached?.Invoke(this);
-                _destination = null;
-                return;
-            }
+        private void OnDestinationReached()
+        {
+            _onDestinationReached?.Invoke(this);
+            _moveBehaviour.RemoveOnDestinationReachedCallback(OnDestinationReached);
+        }
 
-            var translation = _destination.position - transform.position;
-            if (translation.magnitude > _stats.Speed)
-            {
-                translation = translation.normalized * _stats.Speed * Time.deltaTime;
-            }
-            transform.Translate(translation);
+        private void OnKilled()
+        {
+            _onKilled?.Invoke(this);
+            _healthBehaviour.RemoveOnKilledCallback(OnKilled);
         }
 
         public void SetMoveDestination(Transform destination)
         {
-            _destination = destination;
+            _moveBehaviour.MoveTo(destination);
         }
 
         public void AddOnKilledCallback(Action<BaseMonster> callback)
