@@ -8,6 +8,7 @@ namespace TD.Towers.TrackBehaviour
     {
         [SerializeField] private float _rotationSpeed = 3f;
         [SerializeField] private float _treshhold = 0.2f;
+        [SerializeField] private Transform _shootPoint;
 
         public override bool CanShoot => _canShoot;
 
@@ -37,7 +38,7 @@ namespace TD.Towers.TrackBehaviour
             while(true)
             {
                 var shootPoint = GetPointToShoot(_alignTarget.transform.position, _alignTarget.gameObject.transform.forward * _alignTarget.Speed, _expectedProjectiles.Speed);
-                var rotationDirection = (shootPoint - transform.position).normalized;
+                var rotationDirection = (shootPoint - _shootPoint.transform.position).normalized;
                 var rotationValue = Quaternion.LookRotation(rotationDirection);
                 _towerBarrel.transform.rotation = Quaternion.Slerp(_towerBarrel.transform.rotation, rotationValue, Time.deltaTime * _rotationSpeed);
 

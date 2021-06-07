@@ -5,10 +5,11 @@ using System;
 using TD.Configs.Monsters;
 using TD.Monsters.Move;
 using TD.Monsters.Health;
+using TD.Core;
 
 namespace TD.Monsters
 {
-    public class BaseMonster : MonoBehaviour, IHitable
+    public class BaseMonster : MonoBehaviour, IHitable, IUpdatable
     {
         const float _destinationReachedTreshhold = 0.3f;
 
@@ -46,7 +47,7 @@ namespace TD.Monsters
                 _onKilled?.Invoke(this);
         }
 
-        public void UpdateInternal()
+        void IUpdatable.UpdateInternal()
         {
             _moveBehaviour.UpdateInternal();
         }

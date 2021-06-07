@@ -1,29 +1,30 @@
 using System.Collections.Generic;
+using TD.Managers;
 using UnityEngine;
 
 namespace TD.Towers.Projectiles
 {
-    public class ProjectilesManager : MonoBehaviour
+    public class ProjectilesManager : UpdatableManager<BaseProjectile>
     {
-        private List<BaseProjectile> _projectiles = new List<BaseProjectile>();
-
-        private void Update()
+        private void Start()
         {
-            foreach (var projectile in _projectiles)
-                projectile.UpdateInternal();
+            _updatableRemoved += DeleteProjectile;
         }
 
-        public void AddProjectile(BaseProjectile projectile)
+        public override void AddUpdatable(BaseProjectile projectile)
         {
-            _projectiles.Add(projectile);
-            projectile.AddOnHitCallback(RemoveProjectile);
+            base.AddUpdatable(projectile);
+            projectile.AddOnHitCallback(RemoveUpdatable);
         }
 
-        public void RemoveProjectile(BaseProjectile projectile)
+        public override void RemoveUpdatable(BaseProjectile projectile)
         {
-            _projectiles.Remove(projectile);
-            projectile.RemoveOnHitCallback(RemoveProjectile);
+            projectile.RemoveOnHitCallback(RemoveUpdatable);
+            base.RemoveUpdatable(projectile);
+        }
 
+        private void DeleteProjectile(BaseProjectile projectile)
+        {
             Destroy(projectile.gameObject);
         }
     }

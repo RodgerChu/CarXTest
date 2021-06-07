@@ -1,38 +1,35 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using TD.Managers;
 using UnityEngine;
 
 namespace TD.Monsters
 {
-    public class MonstersManager : MonoBehaviour
+    public class MonstersManager : UpdatableManager<BaseMonster>
     {
-        private List<BaseMonster> _monsters = new List<BaseMonster>();
-
         private Action<BaseMonster> _onMonsterKilled;
 
-        private void Update()
+        private void Start()
         {
-            foreach (var monster in _monsters)
-                monster.UpdateInternal();
+            _updatableRemoved += DeleteMonster;
         }
 
-        public void AddMonster(BaseMonster monster)
+        public override void AddUpdatable(BaseMonster monster)
         {
-            _monsters.Add(monster);
+            Debug.LogError($"Adding monster {monster} | {monster.gameObject.name}");
+            base.AddUpdatable(monster);
 
-            monster.AddOnDestionationReachedCallback(RemoveMonster);
+            monster.AddOnDestionationReachedCallback(RemoveUpdatable);
             monster.AddOnKilledCallback(OnMonsterKilled);
         }
 
-        public void RemoveMonster(BaseMonster monster)
+        public override void RemoveUpdatable(BaseMonster monster)
         {
-            _monsters.Remove(monster);
+            base.RemoveUpdatable(monster);
 
-            monster.RemoveOnDestionReachedCallback(RemoveMonster);
-            monster.RemoveOnKilledCallback(RemoveMonster);
-
-            Destroy(monster.gameObject);
+            monster.RemoveOnDestionReachedCallback(RemoveUpdatable);
+            monster.RemoveOnKilledCallback(RemoveUpdatable);
         }
 
         public void AddOnMonsterKilledCallback(Action<BaseMonster> callback)
@@ -48,7 +45,12 @@ namespace TD.Monsters
         private void OnMonsterKilled(BaseMonster monster)
         {
             _onMonsterKilled?.Invoke(monster);
-            RemoveMonster(monster);
+            RemoveUpdatable(monster);
+        }
+
+        private void DeleteMonster(BaseMonster monster)
+        {
+            Destroy(monster.gameObject);
         }
     }
 }

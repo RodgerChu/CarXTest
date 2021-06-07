@@ -2,12 +2,13 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using TD.Configs.Projectiles;
+using TD.Core;
 using TD.Hitables;
 using UnityEngine;
 
 namespace TD.Towers.Projectiles
 {
-    public abstract class BaseProjectile : MonoBehaviour
+    public abstract class BaseProjectile : MonoBehaviour, IUpdatable
     {
         [SerializeField] private ProjectileConfig _projectileConfig;
 
@@ -38,6 +39,7 @@ namespace TD.Towers.Projectiles
             var hitable = other.GetComponent<IHitable>();
             if (hitable != null)
             {
+                Debug.LogError("removing pro");
                 hitable.OnHit(this);
                 OnHit?.Invoke(this);
             }

@@ -63,7 +63,7 @@ namespace TD.EnemiesSpawn
             monster.transform.position = _spawnPosition.position;
             monster.SetMoveDestination(_destination);
 
-            _monstersManager.AddMonster(monster);
+            _monstersManager.AddUpdatable(monster);
         }
     }
 }

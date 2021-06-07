@@ -25,7 +25,7 @@ namespace TD.Towers.AttackBehaviour
             projectile.transform.position = _turretBarrel.transform.position;
             projectile.SetDirection(target.transform.position);
 
-            _projectilesManager.AddProjectile(projectile);
+            _projectilesManager.AddUpdatable(projectile);
 
             _cooldownCounter = _attackCooldown;
             StartCoroutine(ReloadCoroutine());
